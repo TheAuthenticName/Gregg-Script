@@ -102,10 +102,8 @@ local function GreggDied()
     print("Reset When Gregg Dies")
     game.Workspace.DescendantRemoving:Connect(function(descendant)
         if descendant.Name == "Gregg" then
-            PlayerGui.CrossDungeonGregg:GetPropertyChangedSignal("Enabled"):Connect(function()
-                task.wait(1)
-                Amount = PlayerGui.CrossDungeonGregg.greggRewards.Material.TextLabel.Text
-            end)
+            task.wait(.5)
+            Amount = PlayerGui.CrossDungeonGregg.greggRewards.Material.TextLabel.Text
             for i, v in pairs(AmethystMaps) do
                 if dungeonName == v then
 
