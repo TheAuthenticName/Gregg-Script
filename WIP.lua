@@ -61,7 +61,7 @@ local function SendWebhook(Dungeon, Material, Amount, Total)
                         },
                         {
                             ["name"] = "Material Information",
-                            ["value"] = `Material type: {Material}\nAmount Added: {Amount}\nTotal Amount{Total}`
+                            ["value"] = `Material type: {Material}\nAmount Added: {Amount}\nTotal Amount: {Total}`
                         }
                     },
                     ["footer"] = {
