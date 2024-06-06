@@ -42,7 +42,7 @@ end
 
 -- Lobby
 if game.PlaceId == 2414851778 then
-    print("Lobby")
+    print("Lobby!")
     LoadAuroraWare()
     print("Loaded")
 end
