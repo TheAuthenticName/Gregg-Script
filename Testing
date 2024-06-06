@@ -1,0 +1,56 @@
+repeat
+    task.wait()
+until game:IsLoaded()
+
+-- Main
+local Config = {
+    Enabled = getgenv().Config.Enabled,
+    Settings = {
+        ResetOnGregg = getgenv().Config.Settings.ResetOnGregg,
+        ResetInYokai = getgenv().Config.Settings.ResetInYokai,
+        ResetInOptimalLocations = getgenv().Config.Settings.ResetInOptimalLocations,
+        ShowMaterials = getgenv().Config.Settings.ShowMaterials
+    },
+    AutoConfiguration = {
+        Enabled = getgenv().Config.AutoConfiguration.Enabled,
+        Key = getgenv().Config.AutoConfiguration.Key,
+    },
+    WebhookSettings = {
+        Enabled = getgenv().Config.WebhookSettings.Enabled,
+        DisplayName = getgenv().Config.WebhookSettings.DisplayName,
+        Url = getgenv().Config.WebhookSettings.Url
+    }
+}
+
+if Config.Enabled == false then
+    print("Script Disabled")
+    return
+end
+
+-- Services
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+-- Variables
+local Player = Players.LocalPlayer
+local PlayerGui = Player.PlayerGui
+local Character = Player.Character or Player.CharacterAdded:Wait()
+
+-- Functions
+local function LoadAuroraWare()
+    getgenv().Key = Config.AutoConfiguration.Key
+    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
+end
+
+-- Lobby
+if game.PlaceId == 2414851778 then
+    LoadAuroraWare()
+    print("Loaded")
+end
+
+-- Dungeon
+if game.PlaceId == 14363263080 then
+    
+end
+
+print("Loaded")
