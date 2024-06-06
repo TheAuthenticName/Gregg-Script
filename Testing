@@ -18,7 +18,7 @@ local Config = {
     WebhookSettings = {
         Enabled = getgenv().Config.WebhookSettings.Enabled,
         DisplayName = getgenv().Config.WebhookSettings.DisplayName,
-        Url = getgenv().Config.WebhookSettings.Url
+        Url = getgenv().Config.WebhookSettings.URL
     }
 }
 
