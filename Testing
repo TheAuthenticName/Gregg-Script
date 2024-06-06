@@ -21,6 +21,7 @@ local Config = {
 if Config.Enabled == false then
     print("Script Disabled")
     return
+else print("Script Enabled")
 end
 
 -- Services
