@@ -31,20 +31,17 @@ local Players = game:GetService("Players")
 -- Variables
 local Player = Players.LocalPlayer
 local PlayerGui = Player.PlayerGui
-local Character = Player.Character or Player.CharacterAdded:Wait()
 
 -- Functions
 local function LoadAuroraWare()
     getgenv().Key = Config.AutoConfiguration.Key
-    print(getgenv().Key)
     loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
+    print("Loaded")
 end
 
 -- Lobby
 if game.PlaceId == 2414851778 then
-    print("Lobby!")
     LoadAuroraWare()
-    print("Loaded")
 end
 
 -- Dungeon
