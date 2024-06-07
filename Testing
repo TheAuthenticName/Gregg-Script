@@ -105,5 +105,3 @@ end
 if game.PlaceId == 14363263080 then
     
 end
-
-print("Loaded")
