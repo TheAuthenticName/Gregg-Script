@@ -96,6 +96,7 @@ if game.PlaceId == 2414851778 then
         warn("No config file found, Creating one!")
         WriteData()
     else
+        warn("Found config file!")
         WriteData()
     end
 end
