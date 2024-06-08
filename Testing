@@ -92,6 +92,38 @@ local GildedConfig = {
     }
 }
 
+local NorthernConfig = {
+    Mobs = {
+        LimitSpellCasting = true,
+        Distance = 50,
+        Teleports = {
+            Enabled = true,
+            Distance = 20,
+            Delay = 0.1
+        },
+        AbilityRange = 60
+    },
+    Miscellaneous = {
+        AggressiveMode = true,
+        AutoRetryDungeon = true,
+        DisableDodging = false
+    },
+    CastBetweenEnemies = {
+        Enabled = true,
+        CastingRange = 80
+    },
+    Boss = {
+        LimitSpellCasting = false,
+        Distance = 70,
+        Teleports = {
+            Enabled = true,
+            Distance = 20,
+            Delay = 0.1
+        },
+        AbilityRange = 87
+    },
+}
+
 -- Material table
 local Materials = {
     ["Astral Amethyst"] = 0,
@@ -177,6 +209,9 @@ local function ResetPlayer()
     PlayerGui.RevivePrompt:GetPropertyChangedSignal("Enabled"):Connect(function()
         game:GetService("ReplicatedStorage"):WaitForChild("dataRemoteEvent"):FireServer(unpack({[1] = {[1] = {["\3"] = "closeRevive"}, [2] = "\13"}}))
         PlayerGui.RevivePrompt.Enabled = false
+    end)
+    PlayerGui.RetryVote:GetPropertyChangedSignal("Enabled"):Connect(function()
+        game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack({[1] = {[1] = {["\3"] = "vote", ["vote"] = true}, [2] = "\28"}}))
     end)
 end
 
@@ -334,6 +369,16 @@ if game.PlaceId == 14363263080 then
             end
 
             WriteConfigData(GildedConfig)
+
+        elseif dungeonName == "Northern Lands" then
+
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+                NorthernConfig.Mobs.Teleports.Delay = 0.2
+                NorthernConfig.Boss.Teleports.Delay = 0.2
+                NorthernConfig.Boss.Teleports.Distance = 16
+            end
+
+            WriteConfigData(NorthernConfig)
         end
     end
 
