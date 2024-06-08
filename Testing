@@ -324,17 +324,17 @@ if game.PlaceId == 14363263080 then
             end
 
             WriteConfigData(YokaiConfig)
+
+        elseif dungeonName == "Gilded Skies" then
+
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+                GildedConfig.Mobs.Teleports.Delay = 0.2
+                GildedConfig.Boss.Teleports.Delay = 0.2
+                GildedConfig.Boss.Teleports.Distance = 16
+            end
+
+            WriteData(GildedConfig)
         end
-
-    elseif dungeonName == "Gilded Skies" then
-
-        if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
-            GildedConfig.Mobs.Teleports.Delay = 0.2
-            GildedConfig.Boss.Teleports.Delay = 0.2
-            GildedConfig.Boss.Teleports.Distance = 16
-        end
-
-        WriteData(GildedConfig)
     end
 
     LoadAuroraware()
