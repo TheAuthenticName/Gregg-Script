@@ -209,6 +209,7 @@ local function ResetPlayer()
     while task.wait() do
         if game.Players.LocalPlayer.PlayerGui.RevivePrompt.Enabled then
             game:GetService("ReplicatedStorage"):WaitForChild("dataRemoteEvent"):FireServer(unpack({[1] = {[1] = {["\3"] = "closeRevive"}, [2] = "\13"}}))
+            game.Players.LocalPlayer.PlayerGui.RevivePrompt.Enabled = false
         end
         if game.Players.LocalPlayer.PlayerGui.RetryVote.Enabled then
             game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack({[1] = {[1] = {["\3"] = "vote", ["vote"] = true}, [2] = "\28"}}))
