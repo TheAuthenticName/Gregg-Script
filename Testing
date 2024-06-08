@@ -26,6 +26,45 @@ else
     print("Script Enabled")
 end
 
+-- Auroraware Configs
+local YokaiConfig = {
+    Mobs = {
+        LimitSpellCasting = true,
+        Distance = 30,
+        Teleports = {
+          Enabled = true,
+          Distance = 20,
+          Delay = 0.1
+        },
+        AbilityRange = 50
+      },
+      Miscellaneous = {
+        AggressiveMode = true,
+        AutoRetryDungeon = true,
+        DisableDodging = false
+      },
+      CastBetweenEnemies = {
+        Enabled = true,
+        CastingRange = 80
+      },
+      Boss = {
+        LimitSpellCasting = false,
+        Distance = 50,
+        Teleports = {
+          Enabled = true,
+          Distance = 20,
+          Delay = 0.1
+        },
+        AbilityRange = 70
+      },
+}
+local GildedConfig = {}
+
+
+
+
+
+
 -- Material table
 local Materials = {
     ["Astral Amethyst"] = 0,
@@ -56,6 +95,10 @@ local Material
 local Total
 
 local Json
+local Mobs
+local Miscellaneous
+local CastBetweenEnemies
+local Boss
 
 -- Functions
 local function WriteData()
@@ -63,18 +106,33 @@ local function WriteData()
     writefile("GreggTracker/Config.json", Json)
 end
 
-local function ReadData()
-    
-end
-
-local function Readmaterials()
+local function ReadMaterials()
     for index, value in pairs(Materials) do
         print(`{index}: {value}`)
     end
 end
 
+local function ReadData()
+    Json = HttpService:JSONDecode(readfile("GreggTracker/Config.json"))
+end
+
+local function ResetPlayer()
+    
+end
+
+local function GreggDied()
+    
+end
+
+local function LoadAuroraware()
+    getgenv().Key = Config.AutoConfiguration.Key
+    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
+end
+
 -- Lobby Shit
 if game.PlaceId == 2414851778 then
+    LoadAuroraware()
+
     local CraftingMenu = PlayerGui:WaitForChild("CraftingUI"):WaitForChild("Main"):WaitForChild("Topbar")
 
     task.wait(3)
@@ -83,7 +141,7 @@ if game.PlaceId == 2414851778 then
         Materials[index] = tonumber(CraftingMenu:FindFirstChild(index).TextLabel.Text)
     end
 
-    Readmaterials()
+    ReadMaterials()
 
     if not isfolder("GreggTracker") then
         warn("No folder found, Creating one!")
@@ -103,5 +161,97 @@ end
 
 -- Dungeon Shit
 if game.PlaceId == 14363263080 then
-    
+    dungeon = game.Workspace:WaitForChild("dungeon")
+    dungeonName = game.Workspace:WaitForChild("dungeonName").Value
+
+    -- Auto Config Shit
+    if Config.AutoConfiguration.Enabled == true then
+        if dungeonName == "Yokai Peak" then
+
+            -- Mob Config
+            Json = HttpService:JSONDecode(readfile("AuroraWareV3/Configuration/Settings.json"))
+            Json.BaseAutoFarm.Mobs = YokaiConfig.Mobs
+            Mobs = HttpService:JSONEncode(Json)
+            writefile("AuroraWareV3/Configuration/Settings.json", Mobs)
+
+            -- Misc Config
+            Json.BaseAutoFarm.Miscellaneous = YokaiConfig.Miscellaneous
+            Miscellaneous = HttpService:JSONEncode(Json)
+            writefile("AuroraWareV3/Configuration/Settings.json", Miscellaneous)
+
+            -- Casting Config
+            Json.BaseAutoFarm.CastBetweenEnemies = YokaiConfig.CastBetweenEnemies
+            CastBetweenEnemies = HttpService:JSONEncode(Json)
+            writefile("AuroraWareV3/Configuration/Settings.json", CastBetweenEnemies)
+
+            -- Boss Config
+            Json.BaseAutoFarm.Boss = YokaiConfig.Boss
+            Boss = HttpService:JSONEncode(Json)
+            writefile("AuroraWareV3/Configuration/Settings.json", Boss)
+        end
+    end
+
+    LoadAuroraware()
+
+    -- Getting Materials
+    if isfile("GreggTracker/Config.json") then
+        ReadData()
+        for index, value in pairs(Json) do
+            Materials[index] = value
+        end
+    else
+        Player:Kick("No config file found!")
+    end
+
+    ReadMaterials()
+
+    -- Gegg Settings
+    if dungeonName == "Yokai Peak" and Config.Settings.ResetInYokai == true then
+        GreggDied()
+    else
+        GreggDied()
+    end
+
+    if Config.Settings.ResetInOptimalLocations == true then
+        -- Samurai Palace
+        if dungeonName == "Samurai Palace" then
+            game.Workspace.DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Sanada Yukimura" then
+                    ResetPlayer()
+                end
+            end)
+        end
+        elseif dungeonName == "Steampunk Sewers" then
+            dungeon.room4.DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Hammer Bot" then
+                    ResetPlayer()
+                end
+            end)
+        elseif dungeonName == "Orbital Outpost" then
+            game.Workspace.DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Tesla Master" then
+                    ResetPlayer()
+                end
+            end)
+        elseif dungeonName == "Volcanic Chambers" then
+            dungeon.room8.DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Aggressive Lava Walker" then
+                    ResetPlayer()
+                end
+            end)
+        elseif dungeonName == "Enchanted Forest" then
+            game.Workspace.DescendantAdded:Connect(function(descendant)
+                if descendant.Name == "Crystal Golem" then
+                    ResetPlayer()
+                end
+            end)
+        elseif dungeonName == "Gilded Skies" then
+            game.Workspace.DescendantAdded:Connect(function(descendant)
+                if descendant == "General Cragg" then
+                    ResetPlayer()
+                end
+            end)
+    end
 end
+
+print("Loaded")
