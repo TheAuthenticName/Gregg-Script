@@ -20,10 +20,10 @@ local Config = {
 
 -- Disable Script if disabled
 if Config.Enabled == false then
-    print("Script Disabled")
+    print("Script Disabled!")
     return
 else
-    print("Script Enabled")
+    print("Script Enabled!")
 end
 
 -- Auroraware Configs
