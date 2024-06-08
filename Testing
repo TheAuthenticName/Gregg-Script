@@ -360,46 +360,48 @@ if game.PlaceId == 14363263080 then
         print("Will not reset when gregg dies")
     end
 
-    if Config.Settings.ResetInOptimalLocations == true then
-        -- Samurai Palace
-        if dungeonName == "Samurai Palace" then
-            game.Workspace.DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Sanada Yukimura" then
-                    ResetPlayer()
-                end
-            end)
+    task.spawn(function()
+        if Config.Settings.ResetInOptimalLocations == true then
+            -- Samurai Palace
+            if dungeonName == "Samurai Palace" then
+                game.Workspace.DescendantAdded:Connect(function(descendant)
+                    if descendant.Name == "Sanada Yukimura" then
+                        ResetPlayer()
+                    end
+                end)
+            end
+            elseif dungeonName == "Steampunk Sewers" then
+                dungeon.room4.DescendantAdded:Connect(function(descendant)
+                    if descendant.Name == "Hammer Bot" then
+                        ResetPlayer()
+                    end
+                end)
+            elseif dungeonName == "Orbital Outpost" then
+                game.Workspace.DescendantAdded:Connect(function(descendant)
+                    if descendant.Name == "Tesla Master" then
+                        ResetPlayer()
+                    end
+                end)
+            elseif dungeonName == "Volcanic Chambers" then
+                dungeon.room8.DescendantAdded:Connect(function(descendant)
+                    if descendant.Name == "Aggressive Lava Walker" then
+                        ResetPlayer()
+                    end
+                end)
+            elseif dungeonName == "Enchanted Forest" then
+                game.Workspace.DescendantAdded:Connect(function(descendant)
+                    if descendant.Name == "Crystal Golem" then
+                        ResetPlayer()
+                    end
+                end)
+            elseif dungeonName == "Gilded Skies" then
+                game.Workspace.DescendantAdded:Connect(function(descendant)
+                    if descendant == "General Cragg" then
+                        ResetPlayer()
+                    end
+                end)
         end
-        elseif dungeonName == "Steampunk Sewers" then
-            dungeon.room4.DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Hammer Bot" then
-                    ResetPlayer()
-                end
-            end)
-        elseif dungeonName == "Orbital Outpost" then
-            game.Workspace.DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Tesla Master" then
-                    ResetPlayer()
-                end
-            end)
-        elseif dungeonName == "Volcanic Chambers" then
-            dungeon.room8.DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Aggressive Lava Walker" then
-                    ResetPlayer()
-                end
-            end)
-        elseif dungeonName == "Enchanted Forest" then
-            game.Workspace.DescendantAdded:Connect(function(descendant)
-                if descendant.Name == "Crystal Golem" then
-                    ResetPlayer()
-                end
-            end)
-        elseif dungeonName == "Gilded Skies" then
-            game.Workspace.DescendantAdded:Connect(function(descendant)
-                if descendant == "General Cragg" then
-                    ResetPlayer()
-                end
-            end)
-    end
+    end)
 end
 
 print("Loaded")
