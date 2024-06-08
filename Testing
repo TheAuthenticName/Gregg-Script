@@ -354,7 +354,7 @@ if game.PlaceId == 14363263080 then
     -- Gegg Settings
     if dungeonName == "Yokai Peak" and Config.Settings.ResetInYokai == true then
         GreggDied()
-    elseif Config.Settings.ResetOnGregg == true then
+    elseif Config.Settings.ResetOnGregg == true and dungeonName ~= "Yokai Peak" then
         GreggDied()
     else
         print("Will not reset when gregg dies")
