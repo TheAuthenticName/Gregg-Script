@@ -395,7 +395,7 @@ if game.PlaceId == 14363263080 then
         elseif dungeonName == "Gilded Skies" then
             print("Gilded Skies")
             game.Workspace.DescendantAdded:Connect(function(descendant)
-                if descendant == "General Cragg" then
+                if descendant.Name == "General Cragg" then
                     ResetPlayer()
                 end
             end)
