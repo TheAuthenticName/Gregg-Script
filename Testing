@@ -206,9 +206,11 @@ end
 
 local function ResetPlayer()
     Player.Character.Humanoid.Health = 0
-    PlayerGui.RevivePrompt:GetPropertyChangedSignal("Enabled"):Connect(function()
-        game:GetService("ReplicatedStorage"):WaitForChild("dataRemoteEvent"):FireServer(unpack({[1] = {[1] = {["\3"] = "closeRevive"}, [2] = "\13"}}))
-        PlayerGui.RevivePrompt.Enabled = false
+    task.spawn(function()
+        PlayerGui.RevivePrompt:GetPropertyChangedSignal("Enabled"):Connect(function()
+            game:GetService("ReplicatedStorage"):WaitForChild("dataRemoteEvent"):FireServer(unpack({[1] = {[1] = {["\3"] = "closeRevive"}, [2] = "\13"}}))
+            PlayerGui.RevivePrompt.Enabled = false
+        end)
     end)
     PlayerGui.RetryVote:GetPropertyChangedSignal("Enabled"):Connect(function()
         game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack({[1] = {[1] = {["\3"] = "vote", ["vote"] = true}, [2] = "\28"}}))
