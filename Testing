@@ -407,7 +407,7 @@ if game.PlaceId == 14363263080 then
     if Config.AutoConfiguration.Enabled == true then
         if dungeonName == "Yokai Peak" then
 
-            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 150 then
                 YokaiConfig.Mobs.Teleports.Delay = 0.2
                 YokaiConfig.Boss.Teleports.Delay = 0.2
                 YokaiConfig.Boss.Teleports.Distance = 16
@@ -417,7 +417,7 @@ if game.PlaceId == 14363263080 then
 
         elseif dungeonName == "Gilded Skies" then
 
-            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 150 then
                 GildedConfig.Mobs.Teleports.Delay = 0.2
                 GildedConfig.Boss.Teleports.Delay = 0.2
                 GildedConfig.Boss.Teleports.Distance = 16
@@ -427,7 +427,7 @@ if game.PlaceId == 14363263080 then
 
         elseif dungeonName == "Northern Lands" then
 
-            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 150 then
                 NorthernConfig.Mobs.Teleports.Delay = 0.2
                 NorthernConfig.Boss.Teleports.Delay = 0.2
                 NorthernConfig.Boss.Teleports.Distance = 16
