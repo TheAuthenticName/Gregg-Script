@@ -9,7 +9,11 @@ local Config = {
     },
     AutoConfiguration = {
         Enabled = getgenv().Config.AutoConfiguration.Enabled,
-        Key = getgenv().Config.AutoConfiguration.AuroraWareSettings.Key,
+        Key = getgenv().Config.AutoConfiguration.Key,
+        Settings = {
+            AvgPingPerAccount = getgenv().Config.AutoConfiguration.AuroraWareSettings.AvgPingPerAccount,
+            DisableDodging = getgenv().Config.AutoConfiguration.AuroraWareSettings.DisableDodging
+        }
     },
     WebhookSettings = {
         Enabled = getgenv().Config.WebhookSettings.Enabled,
@@ -20,17 +24,14 @@ local Config = {
 
 -- Disable Script if disabled
 if Config.Enabled == false then
-    print("Script Disabled!")
     return
-else
-    print("Script Enabled!")
 end
 
 -- Auroraware Configs
 local YokaiConfig = {
     Mobs = {
         LimitSpellCasting = true,
-        Distance = 30,
+        Distance = 20,
         Teleports = {
           Enabled = true,
           Distance = 20,
@@ -59,11 +60,6 @@ local YokaiConfig = {
       },
 }
 local GildedConfig = {}
-
-
-
-
-
 
 -- Material table
 local Materials = {
@@ -112,21 +108,45 @@ local function ReadMaterials()
     end
 end
 
+local function LoadAuroraware()
+    getgenv().Key = Config.AutoConfiguration.Key
+    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
+end
+
 local function ReadData()
     Json = HttpService:JSONDecode(readfile("GreggTracker/Config.json"))
 end
 
+local function WriteConfigData(ConfigName)
+    Json = HttpService:JSONDecode(readfile("AuroraWareV3/Configuration/Settings.json"))
+
+    -- Mob Config
+    Json.BaseAutoFarm.Mobs = ConfigName.Mobs
+    Mobs = HttpService:JSONEncode(Json)
+    writefile("AuroraWareV3/Configuration/Settings.json", Mobs)
+
+    -- Misc Config
+    Json.BaseAutoFarm.Miscellaneous = ConfigName.Miscellaneous
+    Miscellaneous = HttpService:JSONEncode(Json)
+    writefile("AuroraWareV3/Configuration/Settings.json", Miscellaneous)
+
+    -- Casting Config
+    Json.BaseAutoFarm.CastBetweenEnemies = ConfigName.CastBetweenEnemies
+    CastBetweenEnemies = HttpService:JSONEncode(Json)
+    writefile("AuroraWareV3/Configuration/Settings.json", CastBetweenEnemies)
+
+    -- Boss Config
+    Json.BaseAutoFarm.Boss = ConfigName.Boss
+    Boss = HttpService:JSONEncode(Json)
+    writefile("AuroraWareV3/Configuration/Settings.json", Boss)
+end
+
 local function ResetPlayer()
-    
+    Player.Character.Humanoid.Health = 0
 end
 
 local function GreggDied()
     
-end
-
-local function LoadAuroraware()
-    getgenv().Key = Config.AutoConfiguration.Key
-    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
 end
 
 -- Lobby Shit
@@ -168,26 +188,13 @@ if game.PlaceId == 14363263080 then
     if Config.AutoConfiguration.Enabled == true then
         if dungeonName == "Yokai Peak" then
 
-            -- Mob Config
-            Json = HttpService:JSONDecode(readfile("AuroraWareV3/Configuration/Settings.json"))
-            Json.BaseAutoFarm.Mobs = YokaiConfig.Mobs
-            Mobs = HttpService:JSONEncode(Json)
-            writefile("AuroraWareV3/Configuration/Settings.json", Mobs)
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 80 then
+                YokaiConfig.Mobs.Teleports.Delay = 0.2
+                YokaiConfig.Boss.Teleports.Delay = 0.2
+                YokaiConfig.Boss.Teleports.Distance = 16
+            end
 
-            -- Misc Config
-            Json.BaseAutoFarm.Miscellaneous = YokaiConfig.Miscellaneous
-            Miscellaneous = HttpService:JSONEncode(Json)
-            writefile("AuroraWareV3/Configuration/Settings.json", Miscellaneous)
-
-            -- Casting Config
-            Json.BaseAutoFarm.CastBetweenEnemies = YokaiConfig.CastBetweenEnemies
-            CastBetweenEnemies = HttpService:JSONEncode(Json)
-            writefile("AuroraWareV3/Configuration/Settings.json", CastBetweenEnemies)
-
-            -- Boss Config
-            Json.BaseAutoFarm.Boss = YokaiConfig.Boss
-            Boss = HttpService:JSONEncode(Json)
-            writefile("AuroraWareV3/Configuration/Settings.json", Boss)
+            WriteConfigData(YokaiConfig)
         end
     end
 
