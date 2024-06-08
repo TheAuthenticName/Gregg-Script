@@ -197,7 +197,7 @@ local function Webhook()
                         },
                         {
                             ["name"] = "Material Information",
-                            ["value"] = `Material Type: {Material}\nAmount Added: {Amount}\nTotal Amount: {Amount}`
+                            ["value"] = `Material Type: {Material}\nAmount Added: {Amount}\nTotal Amount: {Total}`
                         }
                     },
                     ["footer"] = {
