@@ -333,8 +333,7 @@ if game.PlaceId == 14363263080 then
                 GildedConfig.Boss.Teleports.Distance = 16
             end
 
-            WriteData(GildedConfig)
-            print("Wrote Gilded Data")
+            WriteConfigData(GildedConfig)
         end
     end
 
