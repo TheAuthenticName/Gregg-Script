@@ -362,14 +362,12 @@ if game.PlaceId == 14363263080 then
 
     task.spawn(function()
         if Config.Settings.ResetInOptimalLocations == true then
-            -- Samurai Palace
             if dungeonName == "Samurai Palace" then
                 game.Workspace.DescendantAdded:Connect(function(descendant)
                     if descendant.Name == "Sanada Yukimura" then
                         ResetPlayer()
                     end
                 end)
-            end
             elseif dungeonName == "Steampunk Sewers" then
                 dungeon.room4.DescendantAdded:Connect(function(descendant)
                     if descendant.Name == "Hammer Bot" then
@@ -400,6 +398,7 @@ if game.PlaceId == 14363263080 then
                         ResetPlayer()
                     end
                 end)
+            end
         end
     end)
 end
