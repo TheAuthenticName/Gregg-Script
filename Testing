@@ -9,7 +9,7 @@ local Config = {
     },
     AutoConfiguration = {
         Enabled = getgenv().Config.AutoConfiguration.Enabled,
-        Key = getgenv().Config.AutoConfiguration.Key,
+        Key = getgenv().Config.AutoConfiguration.AuroraWareSettings.Key,
     },
     WebhookSettings = {
         Enabled = getgenv().Config.WebhookSettings.Enabled,
