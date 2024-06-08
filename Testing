@@ -217,6 +217,59 @@ local function ResetPlayer()
     end)
 end
 
+local function DisplayMaterials()
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = Player.PlayerGui
+    ScreenGui.Enabled = true
+
+    local Frame = Instance.new("Frame")
+    Frame.Parent = ScreenGui
+    Frame.AnchorPoint = Vector2.new(.5, .5)
+    Frame.Position = UDim2.fromScale(.13, .275)
+    Frame.Size = UDim2.fromScale(.2, .2)
+    Frame.BorderSizePixel = 0
+
+    local AmethystLabel = Instance.new("TextLabel")
+    AmethystLabel.Parent = Frame
+    AmethystLabel.Position = UDim2.fromScale(0, 0)
+    AmethystLabel.Size = UDim2.fromScale(1, .2)
+    AmethystLabel.Text = `Astral Amethyst: {Materials["Astral Amethyst"]}`
+    AmethystLabel.TextScaled = true
+    AmethystLabel.FontFace.Bold = true
+    AmethystLabel.TextXAlignment = Enum.TextXAlignment.Left
+    AmethystLabel.BorderSizePixel = 0
+
+    local GoldLabel = Instance.new("TextLabel")
+    GoldLabel.Parent = Frame
+    GoldLabel.Position = UDim2.fromScale(0, .2)
+    GoldLabel.Size = UDim2.fromScale(1, .2)
+    GoldLabel.Text = `Gold Bar: {Materials["Gold Bar"]}`
+    GoldLabel.TextScaled = true
+    GoldLabel.FontFace.Bold = true
+    GoldLabel.TextXAlignment = Enum.TextXAlignment.Left
+    GoldLabel.BorderSizePixel = 0
+
+    local ObsidianLabel = Instance.new("TextLabel")
+    ObsidianLabel.Parent = Frame
+    ObsidianLabel.Position = UDim2.fromScale(0, .4)
+    ObsidianLabel.Size = UDim2.fromScale(1, .2)
+    ObsidianLabel.Text = `Obsidian Chunk: {Materials["Obsidian Chunk"]}`
+    ObsidianLabel.TextScaled = true
+    ObsidianLabel.FontFace.Bold = true
+    ObsidianLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ObsidianLabel.BorderSizePixel = 0
+
+    local MetalLabel = Instance.new("TextLabel")
+    MetalLabel.Parent = Frame
+    MetalLabel.Position = UDim2.fromScale(0, .6)
+    MetalLabel.Size = UDim2.fromScale(1, .2)
+    MetalLabel.Text = `Warforged Metal: {Materials["Warforged Metal"]}`
+    MetalLabel.TextScaled = true
+    MetalLabel.FontFace.Bold = true
+    MetalLabel.TextXAlignment = Enum.TextXAlignment.Left
+    MetalLabel.BorderSizePixel = 0
+end
+
 local function Webhook()
     local data, url
     task.spawn(function()
@@ -317,18 +370,6 @@ end
 
 -- Lobby Shit
 if game.PlaceId == 2414851778 then
-    LoadAuroraware()
-
-    local CraftingMenu = PlayerGui:WaitForChild("CraftingUI"):WaitForChild("Main"):WaitForChild("Topbar")
-
-    task.wait(3)
-
-    for index, value in pairs(Materials) do
-        Materials[index] = tonumber(CraftingMenu:FindFirstChild(index).TextLabel.Text)
-    end
-
-    ReadMaterials()
-
     if not isfolder("GreggTracker") then
         warn("No folder found, Creating one!")
         makefolder("GreggTracker")
@@ -343,6 +384,18 @@ if game.PlaceId == 2414851778 then
         warn("Found config file!")
         WriteData()
     end
+
+    LoadAuroraware()
+
+    local CraftingMenu = PlayerGui:WaitForChild("CraftingUI"):WaitForChild("Main"):WaitForChild("Topbar")
+
+    task.wait(3)
+
+    for index, value in pairs(Materials) do
+        Materials[index] = tonumber(CraftingMenu:FindFirstChild(index).TextLabel.Text)
+    end
+
+    ReadMaterials()
 end
 
 -- Dungeon Shit
@@ -397,6 +450,10 @@ if game.PlaceId == 14363263080 then
     end
 
     ReadMaterials()
+
+    if Config.Settings.ShowMaterials == true then
+        DisplayMaterials()
+    end
 
     -- Gegg Settings
     if dungeonName == "Yokai Peak" and Config.Settings.ResetInYokai == true then
