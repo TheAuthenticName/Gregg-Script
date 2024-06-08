@@ -59,7 +59,38 @@ local YokaiConfig = {
         AbilityRange = 70
       },
 }
-local GildedConfig = {}
+
+local GildedConfig = {
+    Mobs = {
+        LimitSpellCasting = true,
+        Distance = 40,
+        Teleports = {
+            Enabled = true,
+            Distance = 20,
+            Delay = 0.1
+        },
+        AbilityRange = 60
+    },
+    Miscellaneous = {
+        AggressiveMode = true,
+        AutoRetryDungeon = true,
+        DisableDodging = false
+    },
+    CastBetweenEnemies = {
+        Enabled = true,
+        CastingRange = 80
+    },
+    Boss = {
+        LimitSpellCasting = false,
+        Distance = 60,
+        Teleports = {
+            Enabled = true,
+            Distance = 20,
+            Delay = 0.1
+        },
+        AbilityRange = 87
+    }
+}
 
 -- Material table
 local Materials = {
@@ -102,17 +133,6 @@ local function WriteData()
     writefile("GreggTracker/Config.json", Json)
 end
 
-local function ReadMaterials()
-    for index, value in pairs(Materials) do
-        print(`{index}: {value}`)
-    end
-end
-
-local function LoadAuroraware()
-    getgenv().Key = Config.AutoConfiguration.Key
-    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
-end
-
 local function ReadData()
     Json = HttpService:JSONDecode(readfile("GreggTracker/Config.json"))
 end
@@ -141,12 +161,121 @@ local function WriteConfigData(ConfigName)
     writefile("AuroraWareV3/Configuration/Settings.json", Boss)
 end
 
+local function ReadMaterials()
+    for index, value in pairs(Materials) do
+        print(`{index}: {value}`)
+    end
+end
+
+local function LoadAuroraware()
+    getgenv().Key = Config.AutoConfiguration.Key
+    loadstring(request({Url='https://api.dungeonquestroblox.com/Files/Auroraware-dq'}).Body)()
+end
+
 local function ResetPlayer()
     Player.Character.Humanoid.Health = 0
+    PlayerGui.RevivePrompt:GetPropertyChangedSignal("Enabled"):Connect(function()
+        game:GetService("ReplicatedStorage"):WaitForChild("dataRemoteEvent"):FireServer(unpack({[1] = {[1] = {["\3"] = "closeRevive"}, [2] = "\13"}}))
+        PlayerGui.RevivePrompt.Enabled = false
+    end)
+end
+
+local function Webhook()
+    local data, url
+    task.spawn(function()
+        url = Config.WebhookSettings.Url
+        data = {
+            ["embeds"] = {
+                {
+                    ["title"] = "Gregg Defeated",
+                    ["color"] = tonumber(string.format("0x%X", math.random(0x000000, 0xFFFFFF))),
+                    ["type"] = "rich",
+                    ["fields"] = {
+                        {
+                            ["name"] = "Information",
+                            ["value"] = `Name: {Player.Name}\nDungeon: {dungeonName}`,
+                        },
+                        {
+                            ["name"] = "Material Information",
+                            ["value"] = `Material Type: {Material}\nAmount Added: {Amount}\nTotal Amount: {Amount}`
+                        }
+                    },
+                    ["footer"] = {
+                        ["icon_url"] = "https://cdn.discordapp.com/avatars/1140186977359102053/1919becaa00c6edf63a35633ba6608d9",
+                        ["text"] = "Fuck Off Gregg"
+                    }
+                }
+            }
+        }
+        repeat
+            task.wait()
+        until data
+        local newdata = HttpService:JSONEncode(data)
+        local headers = {
+            ["Content-Type"] = "application/json"
+        }
+        local request = http_request or request or HttpPost or http.request
+        local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+        request(abcdef)
+    end)
 end
 
 local function GreggDied()
-    
+    print("Reset's when Gregg dies!")
+    game.Workspace.DescendantRemoving:Connect(function(descendant)
+        if descendant.Name == "Gregg" then
+            task.wait(0.5)
+            Amount = PlayerGui.CrossDungeonGregg.greggRewards.Material.TextLabel.Text
+
+            for index, value in pairs(AmethystMaps) do
+                if dungeonName == value then
+                    
+                    Material = "Astral Amethyst"
+                    Materials["Astral Amethyst"] += string.sub(Amount, 2)
+                    Total = Materials["Astral Amethyst"]
+
+                    WriteData()
+                end
+            end
+
+            for index, value in pairs(GoldMaps) do
+                if dungeonName == value then
+                    
+                    Material = "Gold Bar"
+                    Materials["Gold Bar"] += string.sub(Amount, 2)
+                    Total = Materials["Gold Bar"]
+
+                    WriteData()
+                end
+            end
+
+            for index, value in pairs(ObsidianMaps) do
+                if dungeonName == value then
+                    
+                    Material = "Obsidian Chunk"
+                    Materials["Obsidian Chunk"] += string.sub(Amount, 2)
+                    Total = Materials["Obsidian Chunk"]
+
+                    WriteData()
+                end
+            end
+
+            for index, value in pairs(MetalMaps) do
+                if dungeonName == value then
+                    
+                    Material = "Warforged Metal"
+                    Materials["Warforged Metal"] += string.sub(Amount, 2)
+                    Total = Materials["Warforged Metal"]
+
+                    WriteData()
+                end
+            end
+            if Config.WebhookSettings.Enabled == true then
+                Webhook()
+            end
+            ResetPlayer()
+        end
+    end)
 end
 
 -- Lobby Shit
@@ -188,7 +317,7 @@ if game.PlaceId == 14363263080 then
     if Config.AutoConfiguration.Enabled == true then
         if dungeonName == "Yokai Peak" then
 
-            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 80 then
+            if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
                 YokaiConfig.Mobs.Teleports.Delay = 0.2
                 YokaiConfig.Boss.Teleports.Delay = 0.2
                 YokaiConfig.Boss.Teleports.Distance = 16
@@ -196,6 +325,16 @@ if game.PlaceId == 14363263080 then
 
             WriteConfigData(YokaiConfig)
         end
+
+    elseif dungeonName == "Gilded Skies" then
+
+        if Config.AutoConfiguration.Settings.AvgPingPerAccount >= 100 then
+            GildedConfig.Mobs.Teleports.Delay = 0.2
+            GildedConfig.Boss.Teleports.Delay = 0.2
+            GildedConfig.Boss.Teleports.Distance = 16
+        end
+
+        WriteData(GildedConfig)
     end
 
     LoadAuroraware()
@@ -215,8 +354,10 @@ if game.PlaceId == 14363263080 then
     -- Gegg Settings
     if dungeonName == "Yokai Peak" and Config.Settings.ResetInYokai == true then
         GreggDied()
-    else
+    elseif Config.Settings.ResetOnGregg == true then
         GreggDied()
+    else
+        print("Will not reset when gregg dies")
     end
 
     if Config.Settings.ResetInOptimalLocations == true then
