@@ -370,6 +370,18 @@ end
 
 -- Lobby Shit
 if game.PlaceId == 2414851778 then
+    LoadAuroraware()
+
+    local CraftingMenu = PlayerGui:WaitForChild("CraftingUI"):WaitForChild("Main"):WaitForChild("Topbar")
+
+    task.wait(3)
+
+    for index, value in pairs(Materials) do
+        Materials[index] = tonumber(CraftingMenu:FindFirstChild(index).TextLabel.Text)
+    end
+
+    ReadMaterials()
+
     if not isfolder("GreggTracker") then
         warn("No folder found, Creating one!")
         makefolder("GreggTracker")
@@ -384,18 +396,6 @@ if game.PlaceId == 2414851778 then
         warn("Found config file!")
         WriteData()
     end
-
-    LoadAuroraware()
-
-    local CraftingMenu = PlayerGui:WaitForChild("CraftingUI"):WaitForChild("Main"):WaitForChild("Topbar")
-
-    task.wait(3)
-
-    for index, value in pairs(Materials) do
-        Materials[index] = tonumber(CraftingMenu:FindFirstChild(index).TextLabel.Text)
-    end
-
-    ReadMaterials()
 end
 
 -- Dungeon Shit
